@@ -11,15 +11,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/home')
 def renderpage():
-    # return render_template('animal log.html');
     return render_template('index.html')
-    # return render_template('animal log.html')
-    # return render_template('guide.html')
-    # return render_template('home.html')
-
-# renderpage('animal log.html')
-# renderpage('guide.html')
-# renderpage('home.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
