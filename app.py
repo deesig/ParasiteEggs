@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.utils import secure_filename
 import os
 import shutil
+import numpy as np
+from detection_model import predict
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a_random_secret_key_for_session_handling'
@@ -33,23 +35,28 @@ def upload():
 
 @app.route('/process_images')
 def process_images():
+    final_count = 0;
     image_paths = session.get('uploaded_files', [])
     processed_images = []
+    processed_messages = []
 
     for image_path in image_paths:
         # Process each image and collect results
         result = process_image(image_path)
-        processed_images.append((image_path, result))
+        processed_images.append(result[0])
+        processed_messages.append(result[1])
+        # processed_images.append((image_path, result))
 
+    # Keep track of the final count from all the images
+    final_count = np.sum(processed_images)
+    
     # Cleanup uploaded files after processing
     clear_uploads(app.config['UPLOAD_FOLDER'])
 
-    return render_template('results.html', processed_images=processed_images)
+    return render_template('results.html', processed_images=processed_messages, final_count = final_count)
 
 def process_image(image_path):
-    # Your AI model processing logic here
-    # For example, return a dummy result
-    return f"Processed {image_path}"
+    return (predict(image_path), f"Successfully Processed {image_path}")
 
 def clear_uploads(directory):
     for filename in os.listdir(directory):
