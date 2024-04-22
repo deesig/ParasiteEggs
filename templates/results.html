@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Processing Results</title>
+</head>
+<body>
+    <h1>Results of Image Processing</h1>
+    {% for image_path, result in processed_images %}
+        <div>
+            <h3>Result for {{ image_path }}</h3>
+            <p>{{ result }}</p>
+            <img src="{{ image_path | safe }}" alt="Processed Image">
+        </div>
+    {% endfor %}
+    <a href="{{ url_for('index') }}">Upload More Images</a>
+</body>
+</html>
