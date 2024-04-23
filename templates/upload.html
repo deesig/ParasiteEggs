@@ -1,13 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Upload Multiple Images</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="upload.css" type="text/css">
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='styles/upload.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=Satisfy&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Upload Images</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="images" multiple>
-        <input type="submit" value="Submit">
-    </form>
+    <nav>
+        <div class="logo">EGGNOSTIC</div>
+        <div class="nav-items">
+            <a href="/">Home</a>
+            <a href="/upload_images">Count</a>
+            <a href="/about_us">About Us</a>
+                <div id="top-bar"></div>
+                <div id="bottom-bar"></div>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-container">
+        </div>
+    </section>
 </body>
 </html>

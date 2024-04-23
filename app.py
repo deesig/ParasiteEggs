@@ -19,7 +19,7 @@ def allowed_file(filename):
 def index():
     return render_template('index.html')
 
-@app.route('/upload_page')
+@app.route('/upload_images')
 def upload_page():
     return render_template('upload.html')
 
