@@ -7,12 +7,34 @@
 }
 
 nav {
+    positive: relative;
     height: 85px;
     background: #153a24;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0rem calc((100vw - 1300px) / 2);
+    z-index: 1000;
+}
+
+/* Top and bottom bars */
+#top-bar, #bottom-bar {
+    background-color: #329860; /* Dark grey background */
+    color: white;         /* White text */
+    text-align: center;
+    padding: 40px 0;      /* Padding above and below the text */
+    position: fixed;      /* Fixed at the top */
+    width: 100%;          /* Full width */
+    left: 0;              /* Align to the left of the page */
+    z-index: 0;        /* Makes sure the bar is on top of other content */
+}
+
+#top-bar {
+    top: 0; /* At the top of the nav */
+}
+
+#bottom-bar {
+    bottom: 0; /* At the bottom of the nav */
 }
 
 .logo{
@@ -21,8 +43,10 @@ nav {
     font-weight: bold;
     font-family: "Mystery Quest", cursive;
     padding: 0 2rem;
+    z-index: 1;
 }
 nav .nav-items a {
+    position: relative;
     font-size: 1.2rem; 
 }
 
@@ -30,6 +54,7 @@ nav a{
     text-decoration: none;
     color: #fff;
     padding: 0 1.5rem;
+    z-index: 1;
 }
 
 .hero{
@@ -41,6 +66,7 @@ nav a{
     grid-template-columns: 1fr 1fr;
     height: 95vh;
     padding: 3rem calc((100vw - 1300px)/2);
+    z-index: 1;
 }
 
 .column-left {
@@ -72,6 +98,7 @@ button {
     border-radius: 20px; /* Rounds the corners */
     cursor: pointer;
     transition: background-color 0.3s ease; /* Smooth transition on hover */
+    z-index: 1;
 }
 
 button:hover {
@@ -97,6 +124,11 @@ button:hover {
   font-style: normal;
 }
 
+html, body {
+    overflow: hidden; /* Prevents scrolling in both directions */
+    height: 100%; /* Limits the height to the viewport */
+}
+
 
 
 
@@ -105,5 +137,4 @@ button:hover {
         grid-template-columns: 1fr;
     }
 }
-
 
