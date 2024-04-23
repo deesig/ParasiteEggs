@@ -17,6 +17,10 @@ def allowed_file(filename):
 
 @app.route('/')
 def index():
+    return render_template('home.html')
+
+@app.route('/upload_page')
+def upload_page():
     return render_template('upload.html')
 
 @app.route('/upload', methods=['POST'])
