@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Upload Image to AI Model</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="homepage.css" type="text/css">
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static',filename='styles/homepage.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=Satisfy&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Upload an Image</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="file">
-        <input type="submit" value="Upload Image">
-    </form>
+    <nav>
+        <div class="logo">EGGNOSTIC</div>
+        <div class="nav-items">
+            <a href="/">Home</a>
+            <a href="/">Count</a>
+            <a href="/">About Us</a>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-container">
+            <div class="column-left">
+                <h1 id="typing-text"></h1>
+                <p>Quick, Accurate, and All Done with a Click in the Comfort of Your Home.</p>
+                <button>Start Count</button>
+            </div>
+            <div class="column-right">
+                <img src="https://static.vecteezy.com/system/resources/previews/024/346/434/original/watercolor-farm-animals-cartoon-farm-animals-isolated-on-transparent-background-generative-ai-png.png"
+                     alt="illustration"
+                     class="hero-image"
+                />
+            </div>
+        </div>
+    </section>
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+    <script src="script.js"></script>
 </body>
 </html>
