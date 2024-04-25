@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="count.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/count.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=Satisfy&family=WindSong:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">EGGNOSTIC</div>
+      <div class="nav-items">
+        <a href="/">Home</a>
+        <a href="/count">Count</a>
+        <a href="/about_us">About Us</a>
+        <div id="top-bar"></div>
+        <div id="bottom-bar"></div>
+      </div>
+    </nav>
+    <section class="hero">
+      <div class="hero-container">
+        <div class="chamber">
+          <div class="chamber-header">
+            <p class="header-text">Chamber 1</p>
+          </div>
+          <div class="chamber-header">
+            <p class="header-text">Chamber 2</p>
+          </div>
+        </div>
+        <div class="rectangle">
+          <div class="chamber-rec-text-left">
+            <p class="chamber-output">{{chamber_1_str}}</p>
+          </div>
+          <div class="chamber-rec-image">
+            <img
+              src="{{ url_for('static', filename='images/chamber_square.png') }}"
+              onclick="location.href='/gallery1'"
+                style="cursor: pointer;"
+            />
+          </div>
+          <div class="chamber-rec-text-avg">
+            <p class="chamber-output">{{avg_str}}</p>
+          </div>
+          <div class="chamber-rec-image">
+            <img
+              src="{{ url_for('static', filename='images/chamber_square.png') }}"
+            />
+          </div>
+          <div class="chamber-rec-text-right">
+            <p class="chamber-output">{{chamber_2_str}}</p>
+          </div>
+        </div>
+        <div class="button-container">
+          <div class="buttons">
+            <form action="/upload_1" method="post" enctype="multipart/form-data">
+                <input type="file" name="images" id="file-input2" multiple style="display: none;">
+                <label for="file-input2" class="buttons2 browse-button" tabindex="0">Chamber 1 Upload</label>
+                <button type="submit" class="buttons2 submit-button">Chamber 1 Count</button>
+            </form>
+        </div>
+        
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              var fileInput = document.getElementById('file-input2');
+              var label = document.querySelector('label[for="file-input2"]');
+          
+              // Function to update label text
+              function updateLabelText() {
+                  var fileCount = fileInput.files.length;
+                  if (fileCount > 0) {
+                      label.innerHTML = fileCount + ' Files selected'; // Using innerHTML to render HTML properly
+                  } else {
+                      label.innerHTML = 'Chamber 1 Upload'; // Reset to default if no files are selected
+                  }
+              }
+          
+              // Listen for file input changes
+              fileInput.addEventListener('change', updateLabelText);
+          
+              // Update on page load in case the input retains files after refresh (common in some browsers)
+              updateLabelText();
+          });
+          </script>
+          <div class="button-refresh">
+            <button class="refresh-button" onclick="location.href='/count_new'">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </button>
+          </div>
+
+          <div class="buttons">
+            <form action="/upload_2" method="post" enctype="multipart/form-data">
+                <input type="file" name="images" id="file-input" multiple style="display: none;">
+                <label for="file-input" class="buttons2 browse-button" tabindex="0">Chamber 2 Upload</label>
+                <button type="submit" class="buttons2 submit-button">Chamber 2 Count</button>
+            </form>
+        </div>
+        
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              var fileInput = document.getElementById('file-input');
+              var label = document.querySelector('label[for="file-input"]');
+          
+              // Function to update label text
+              function updateLabelText() {
+                  var fileCount = fileInput.files.length;
+                  if (fileCount > 0) {
+                      label.innerHTML = fileCount + ' Files selected'; // Using innerHTML to render HTML properly
+                  } else {
+                      label.innerHTML = 'Chamber 2 Upload'; // Reset to default if no files are selected
+                  }
+              }
+          
+              // Listen for file input changes
+              fileInput.addEventListener('change', updateLabelText);
+          
+              // Update on page load in case the input retains files after refresh (common in some browsers)
+              updateLabelText();
+          });
+          </script>
+          
+      </div>
+    </section>
+  </body>
+</html>

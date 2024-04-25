@@ -7,14 +7,16 @@
 }
 
 nav {
-    position: relative;
+    position: fixed; /* Change from 'relative' to 'fixed' */
+    top: 0; /* Align to the top of the viewport */
     height: 85px;
     background: #153a24;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0rem calc((100vw - 1300px) / 2);
-    z-index: 1000;
+    width: 100%; /* Ensure it spans the full width of the viewport */
+    z-index: 1000; /* High z-index to keep it above other content */
 }
 
 nav a::after {
@@ -36,7 +38,7 @@ nav a:hover::after {
 
 /* Top and bottom bars */
 #top-bar, #bottom-bar {
-    background-color: #153a24; /* Dark grey background */
+    background-color: #153a24;/* #329860; /* Dark grey background */
     color: white;         /* White text */
     text-align: center;
     padding: 40px 0;      /* Padding above and below the text */
@@ -74,74 +76,62 @@ nav a{
     z-index: 1;
 }
 
-.hero{
-    background: #2f6947;;
+body {
+    background: #2f6947;
 }
 
 .hero-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    height: 95vh;
-    padding: 3rem calc((100vw - 1300px)/2);
-    z-index: 1;
-}
-
-.column-left {
-    display:flex;
+    display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    color: #fff;
-    padding: 0rem 2rem;
 }
 
-.column-left h1 {
-    margin-bottom: 1rem;
-    font-size: 3rem;
+.header-text {
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
 }
 
-.column-left p {
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
-    line-height: 1.5;
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch; 
 }
 
-button {
-    padding: 1rem 2rem; /* Adjust padding as needed */
-    font-size: 1rem;
-    border: none;
-    color: #fff; /* Text color */
-    background-color: #ffcc00; /* Yellow background color */
-    border-radius: 20px; /* Rounds the corners */
-    cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
-    z-index: 1;
-}
-
-button:hover {
-    background-color: #ffdb4d; /* Lighter yellow on hover */
-}
-
-
-.column-right{
+.gallery-item {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0rem 2rem;
+    padding: 1rem;
+    flex: 1 1 25%;
+    max-width: 25%;
+    box-sizing: border-box;
 }
 
-.hero-image{
-    width:125%;
-    height: 90%;
+.gallery-item img {
+    width: 100%;    /* Makes the image responsive */
+    height: auto;   /* Keeps the image aspect ratio intact */
+    display: block; /* Removes bottom space/margin */
 }
 
-.mystery-quest-regular {
-  font-family: "Mystery Quest", system-ui;
-  font-weight: 400;
-  font-style: normal;
+.gallery-item .image-wrapper {
+    width: 100%;           
+    padding-top: 56.25%;     
+    position: relative;    
 }
 
-html, body {
-    overflow: hidden; /* Prevents scrolling in both directions */
+.gallery-item .image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
+    object-fit: cover;      
+}
+
+body {
+    padding-top: 100px;
+    padding-bottom: 15vh;
 }

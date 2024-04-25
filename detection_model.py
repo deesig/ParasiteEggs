@@ -18,8 +18,11 @@ model = project.version(6).model
 # Returnns the count (int) of parasite eggs
 def predict(file_path):
     result = model.predict(file_path, confidence=40, overlap=30).json()
-    detections = sv.Detections.from_roboflow(result)
-    return detections.class_id.size
+    detections = sv.Detections.from_inference(result)
+    bounding_box_annotator = sv.BoundingBoxAnnotator()
+    image = cv2.imread(file_path)
+    annotated_image = bounding_box_annotator.annotate(scene=image, detections=detections)
+    return detections.class_id.size, annotated_image
 
 # labels = [item["class"] for item in result["predictions"]]
 
@@ -27,11 +30,8 @@ def predict(file_path):
 # bounding_box_annotator = sv.BoxAnnotator()
 
 # image = cv2.imread("Enterobius-Vermicularis-151-_jpg.rf.4c92700ee3c56f6c90efe5f27003279a.jpg")
-
-# annotated_image = bounding_box_annotator.annotate(
-#     scene=image, detections=detections)
-# annotated_image = label_annotator.annotate(
-#     scene=annotated_image, detections=detections, labels=labels)
+# # annotated_image = label_annotator.annotate(
+# #     scene=annotated_image, detections=detections, labels=labels)
 
 # print(detections.class_id.size, "parasite eggs detected")
 

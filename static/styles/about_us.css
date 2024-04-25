@@ -7,7 +7,7 @@
 }
 
 nav {
-    positive: relative;
+    position: relative;
     height: 85px;
     background: #153a24;
     display: flex;
@@ -19,7 +19,7 @@ nav {
 
 /* Top and bottom bars */
 #top-bar, #bottom-bar {
-    background-color: #329860; /* Dark grey background */
+    background-color: #153a24; /* Dark grey background */
     color: white;         /* White text */
     text-align: center;
     padding: 40px 0;      /* Padding above and below the text */
@@ -57,8 +57,26 @@ nav a{
     z-index: 1;
 }
 
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 10%;
+    height: 2px; 
+    background-color: #ffcc00;
+    transform: scaleX(0); 
+    transition: transform 0.5s ease; 
+}
+
+nav a:hover::after {
+    width: 100%; 
+    transform: scaleX(1); 
+}
+
+
 .hero{
-    background: #153a24;;
+    background: #2f6947;
 }
 
 .hero-container {
@@ -85,7 +103,7 @@ nav a{
 
 .column-left p {
     margin-bottom: 2rem;
-    font-size: 1.5rem;
+    font-size: 1 rem;
     line-height: 1.5;
 }
 
@@ -136,5 +154,61 @@ html, body {
     .hero-container{
         grid-template-columns: 1fr;
     }
+}
+
+.p {
+  color: #ffff;
+  font-size: 7px;
+  line-height: 15px;
+  
+}
+
+.column-right {
+  display: flex;
+  flex-direction: column; /* Display cards in a column */
+  align-items: center; /* Center cards horizontally */
+  gap: 20px; /* Add gap between rows */
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  grid-gap: 20px; /* Add gap between cards */
+}
+
+.card {
+  width: 225px; /* Set width of the card */
+  height: 225px; /* Set height of the card */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgb(255, 255, 255, 0.1); /* Add shadow for depth */
+  cursor: pointer;
+  background-position: center;
+  background-size: cover;
+}
+
+
+.card1{
+  background-image: url(https://us.images.westend61.de/0001572182pw/smiling-female-farmers-working-at-organic-farm-OIPF01039.jpg);
+}
+
+.card2{
+  background-image: url(https://cdn.sci.news/images/enlarge3/image_4029e-Happy-Cows.jpg);
+}
+
+.card3{
+  background-image: url(https://www.westlab.com/media/amasty/blog/cache/l/a/764/386/lab-testing.jpg);
+}
+
+.card4{
+  background-image: url(https://media.nfuonline.com/Uploaded_Files/_media/418/b1ce89b8-d6fd-4bed-961e-80c93c5730bc_800.jpg?ratio=1.875&width=800&scale=1);
+}
+
+.card:hover{
+  transform: translateY(-10px);
+}
+
+h5{
+  color: #153a24;
+  text-shadow: 0 0 5px #fff;
 }
 

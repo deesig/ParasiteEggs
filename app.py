@@ -3,14 +3,29 @@ from werkzeug.utils import secure_filename
 import os
 import shutil
 import numpy as np
+import cv2
 from detection_model import predict
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'a_random_secret_key_for_session_handling'
-app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['UPLOAD_1'] = 'uploads_chamber1/'
+app.config['UPLOAD_2'] = 'uploads_chamber2/'
+app.config['ANNOTATED_IMAGES_1'] = 'static/annotated_images_1/'
+app.config['ANNOTATED_IMAGES_2'] = 'static/annotated_images_2/'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
+chamber_count_1 = 0
+chamber_1_str = ""
+chamber_count_2 = 0
+chamber_2_str = ""
+avg = 0
+avg_str = ""
+
+os.makedirs(app.config['UPLOAD_1'], exist_ok=True)
+os.makedirs(app.config['UPLOAD_2'], exist_ok=True)
+os.makedirs(app.config['ANNOTATED_IMAGES_1'], exist_ok=True)
+os.makedirs(app.config['ANNOTATED_IMAGES_2'], exist_ok=True)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -19,48 +34,137 @@ def allowed_file(filename):
 def index():
     return render_template('index.html')
 
-@app.route('/upload_images')
-def upload_page():
-    return render_template('upload.html')
+@app.route('/about_us')
+def about_us():
+    return render_template('about_us.html')
 
-@app.route('/upload', methods=['POST'])
-def upload():
+@app.route('/gallery1')
+def gallery1():
+    return render_template('gallery1.html')
+
+@app.route('/gallery2')
+def gallery2():
+    return render_template('gallery2.html')
+
+@app.route('/count_new')
+def count_new():
+    global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
+    
+    chamber_count_1 = 0
+    chamber_count_2 = 0
+    avg = 0
+    chamber_1_str = ""
+    chamber_2_str = ""
+    avg_str = ""
+    clear_uploads(app.config['UPLOAD_1'])
+    clear_uploads(app.config['UPLOAD_2'])
+    clear_uploads(app.config['ANNOTATED_IMAGES_1'])
+    clear_uploads(app.config['ANNOTATED_IMAGES_2'])
+    return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
+
+@app.route('/count')
+def count():
+    return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
+
+@app.route('/upload_1', methods=['POST'])
+def upload_1():
     files = request.files.getlist("images")
-    session['uploaded_files'] = []
+    session['uploaded_files_1'] = []
 
     for file in files:
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filepath = os.path.join(app.config['UPLOAD_1'], filename)
             file.save(filepath)
-            session['uploaded_files'].append(filepath)
+            session['uploaded_files_1'].append(filepath)
 
-    return redirect(url_for('process_images'))
+    return redirect(url_for('process_images_1'))
 
-@app.route('/process_images')
-def process_images():
+@app.route('/upload_2', methods=['POST'])
+def upload_2():
+    files = request.files.getlist("images")
+    session['uploaded_files_2'] = []
+
+    for file in files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_2'], filename)
+            file.save(filepath)
+            session['uploaded_files_2'].append(filepath)
+
+    return redirect(url_for('process_images_2'))
+
+@app.route('/process_images_1')
+def process_images_1():
+    global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
+    
     final_count = 0;
-    image_paths = session.get('uploaded_files', [])
-    processed_images = []
-    processed_messages = []
+    image_paths = session.get('uploaded_files_1', [])
+    counts = []
+    annotated_images = []
 
     for image_path in image_paths:
         # Process each image and collect results
-        result = process_image(image_path)
-        processed_images.append(result[0])
-        processed_messages.append(result[1])
+        result = predict(image_path)
+        counts.append(result[0])
+        annotated_images.append(result[1])
         # processed_images.append((image_path, result))
 
     # Keep track of the final count from all the images
-    final_count = np.sum(processed_images)
+    final_count = round(np.sum(counts))
     
-    # Cleanup uploaded files after processing
-    clear_uploads(app.config['UPLOAD_FOLDER'])
+    count = 1
+    for image in annotated_images:
+        image_path = os.path.join('static/annotated_images_1', f'annotated_image_{count}.jpg')
+        print(image_path)
+        cv2.imwrite(image_path, image)
+        count = count + 1
+    
+    chamber_count_1 = final_count;
+    chamber_1_str = f"{chamber_count_1} Eggs Detected!"
+    if chamber_count_1 > 0 and chamber_count_2 > 0:
+        avg = round((chamber_count_1 + chamber_count_2) / 2)
+        avg_str = f"{avg} Eggs Detected!"
+    else:
+        avg_str = ""
 
-    return render_template('results.html', processed_images=processed_messages, final_count = final_count)
+    return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
 
-def process_image(image_path):
-    return (predict(image_path), f"Successfully Processed {image_path}")
+@app.route('/process_images_2')
+def process_images_2():
+    global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
+    
+    final_count = 0;
+    image_paths = session.get('uploaded_files_2', [])
+    counts = []
+    annotated_images = []
+
+    for image_path in image_paths:
+        # Process each image and collect results
+        result = predict(image_path)
+        counts.append(result[0])
+        annotated_images.append(result[1])
+        # processed_images.append((image_path, result))
+
+    # Keep track of the final count from all the images
+    final_count = round(np.sum(counts))
+    
+    count = 1
+    for image in annotated_images:
+        image_path = os.path.join('static/annotated_images_2', f'annotated_image_{count}.jpg')
+        cv2.imwrite(image_path, image)
+        count = count + 1
+
+    
+    chamber_count_2 = final_count;
+    chamber_2_str = f"{chamber_count_2} Eggs Detected!"
+    if chamber_count_1 > 0 and chamber_count_2 > 0:
+        avg = round((chamber_count_1 + chamber_count_2) / 2)
+        avg_str = f"{avg} Eggs Detected!"
+    else:
+        avg_str = ""
+
+    return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
 
 def clear_uploads(directory):
     for filename in os.listdir(directory):

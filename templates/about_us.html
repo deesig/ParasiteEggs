@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="about_us.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/about_us.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mystery+Quest&family=Satisfy&family=WindSong:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav>
+      <div class="logo">EGGNOSTIC</div>
+      <div class="nav-items">
+          <a href="/">Home</a>
+          <a href="/count_new">Count</a>
+          <a href="/about_us">About Us</a>
+              <div id="top-bar"></div>
+              <div id="bottom-bar"></div>
+      </div>
+    </nav>
+  <section class="hero">
+    <div class="hero-container">
+      <div class="column-left">
+        <h1>Our Mission</h1>
+        <p>Conventional McMaster parasite testing has limitations ranging from cost, inefficiency, and even inaccessibility to farmers residing in rural areas. Our automated egg-counting solution leverages AI to deliver a rapid parasite count without the need for an internet connection or access to a veterinarian facility. With this technology, our mission is to incentivize frequent testing and prevent the need for more extreme measure like deworming or herd infections. </p>
+      </div>
+      <div class="column-right">
+        <div class="row">
+          <div class="card card1">
+            <h5>To Support Farmers</h5>
+          </div>
+          <div class="card card2">
+            <h5>The well-being of animals</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card card3">
+            <h5>Reduce Labor Costs</h5>
+          </div>
+          <div class="card card4">
+            <h5>Caring for Animals Made Easier </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
