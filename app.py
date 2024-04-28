@@ -180,4 +180,4 @@ def clear_uploads(directory):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    aapp.run(host='0.0.0.0', port=80)
