@@ -12,15 +12,17 @@ app.config['UPLOAD_1'] = 'uploads_chamber1/'
 app.config['UPLOAD_2'] = 'uploads_chamber2/'
 app.config['ANNOTATED_IMAGES_1'] = 'static/annotated_images_1/'
 app.config['ANNOTATED_IMAGES_2'] = 'static/annotated_images_2/'
-app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
 
-global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
+global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str, loading_1, loading_2
 chamber_count_1 = 0
 chamber_1_str = ""
 chamber_count_2 = 0
 chamber_2_str = ""
 avg = 0
 avg_str = ""
+loading_1 = False
+loading_2 = False
 
 os.makedirs(app.config['UPLOAD_1'], exist_ok=True)
 os.makedirs(app.config['UPLOAD_2'], exist_ok=True)
@@ -40,11 +42,16 @@ def about_us():
 
 @app.route('/gallery1')
 def gallery1():
-    return render_template('gallery1.html')
+    image_folder = os.path.join('static', 'annotated_images_1')
+    image_files = [os.path.join(image_folder, file) for file in os.listdir(image_folder) if file.endswith((".png", ".jpg", ".jpeg"))]
+    return render_template('gallery1.html', images=image_files)
 
 @app.route('/gallery2')
 def gallery2():
-    return render_template('gallery2.html')
+    image_folder = os.path.join('static', 'annotated_images_2')
+    image_files = [os.path.join(image_folder, file) for file in os.listdir(image_folder) if file.endswith((".png", ".jpg", ".jpeg"))]
+    return render_template('gallery2.html', images=image_files)
+
 
 @app.route('/count_new')
 def count_new():
@@ -56,6 +63,7 @@ def count_new():
     chamber_1_str = ""
     chamber_2_str = ""
     avg_str = ""
+    
     clear_uploads(app.config['UPLOAD_1'])
     clear_uploads(app.config['UPLOAD_2'])
     clear_uploads(app.config['ANNOTATED_IMAGES_1'])
@@ -97,7 +105,6 @@ def upload_2():
 @app.route('/process_images_1')
 def process_images_1():
     global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
-    
     final_count = 0;
     image_paths = session.get('uploaded_files_1', [])
     counts = []
@@ -125,15 +132,12 @@ def process_images_1():
     if chamber_count_1 > 0 and chamber_count_2 > 0:
         avg = round((chamber_count_1 + chamber_count_2) / 2)
         avg_str = f"{avg} Eggs Detected!"
-    else:
-        avg_str = ""
 
     return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
 
 @app.route('/process_images_2')
 def process_images_2():
     global chamber_count_1, chamber_1_str, chamber_count_2, chamber_2_str, avg, avg_str
-    
     final_count = 0;
     image_paths = session.get('uploaded_files_2', [])
     counts = []
@@ -161,8 +165,6 @@ def process_images_2():
     if chamber_count_1 > 0 and chamber_count_2 > 0:
         avg = round((chamber_count_1 + chamber_count_2) / 2)
         avg_str = f"{avg} Eggs Detected!"
-    else:
-        avg_str = ""
 
     return render_template('count.html', chamber_1_str = chamber_1_str, avg_str = avg_str, chamber_2_str = chamber_2_str)
 

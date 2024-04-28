@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
@@ -23,7 +24,7 @@
       <div class="logo">EGGNOSTIC</div>
       <div class="nav-items">
         <a href="/">Home</a>
-        <a href="/count">Count</a>
+        <a href="/count_new">Count</a>
         <a href="/about_us">About Us</a>
         <div id="top-bar"></div>
         <div id="bottom-bar"></div>
@@ -40,9 +41,9 @@
           </div>
         </div>
         <div class="rectangle">
-          <div class="chamber-rec-text-left">
-            <p class="chamber-output">{{chamber_1_str}}</p>
-          </div>
+          <div class="chamber-rec-text-left" id="chamber1Status">
+              <p class="chamber-output">{{chamber_1_str}}</p>
+            </div>
           <div class="chamber-rec-image">
             <img
               src="{{ url_for('static', filename='images/chamber_square.png') }}"
@@ -56,43 +57,77 @@
           <div class="chamber-rec-image">
             <img
               src="{{ url_for('static', filename='images/chamber_square.png') }}"
+              onclick="location.href='/gallery2'"
+                style="cursor: pointer;"
             />
           </div>
-          <div class="chamber-rec-text-right">
-            <p class="chamber-output">{{chamber_2_str}}</p>
+          <div class="chamber-rec-text-right" id="chamber2Status">
+              <p class="chamber-output">{{chamber_2_str}}</p>
           </div>
         </div>
         <div class="button-container">
           <div class="buttons">
-            <form action="/upload_1" method="post" enctype="multipart/form-data">
+            <form action="/upload_1" method="post" enctype="multipart/form-data" id="uploadForm1">
                 <input type="file" name="images" id="file-input2" multiple style="display: none;">
                 <label for="file-input2" class="buttons2 browse-button" tabindex="0">Chamber 1 Upload</label>
-                <button type="submit" class="buttons2 submit-button">Chamber 1 Count</button>
+                <button type="button" id="submitBtn1" class="buttons2 submit-button">Chamber 1 Count</button>       
             </form>
-        </div>
-        
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
-              var fileInput = document.getElementById('file-input2');
-              var label = document.querySelector('label[for="file-input2"]');
+          </div>
+
+          <script type="module">
+            document.addEventListener('DOMContentLoaded', function() {
+              console.log("DOM fully loaded and parsed");
           
-              // Function to update label text
-              function updateLabelText() {
-                  var fileCount = fileInput.files.length;
-                  if (fileCount > 0) {
-                      label.innerHTML = fileCount + ' Files selected'; // Using innerHTML to render HTML properly
-                  } else {
-                      label.innerHTML = 'Chamber 1 Upload'; // Reset to default if no files are selected
-                  }
-              }
+              const submitBtn = document.getElementById('submitBtn1');
           
-              // Listen for file input changes
-              fileInput.addEventListener('change', updateLabelText);
+              submitBtn.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent form from submitting
           
-              // Update on page load in case the input retains files after refresh (common in some browsers)
-              updateLabelText();
-          });
+                const statusDiv = document.getElementById('chamber1Status');
+          
+                statusDiv.innerHTML = ''; // Clear any existing content
+          
+                // Create and append the dotLottie player
+                const player = document.createElement('dotlottie-player');
+                player.setAttribute('src', 'https://lottie.host/7710e71a-8ae0-4ac7-9035-dca1806f3160/xFqt1XdNY4.json');
+                player.setAttribute('background', 'transparent');
+                player.setAttribute('speed', '1.5');
+                player.style.width = '100px';
+                player.style.height = '100px';
+                player.setAttribute('loop', 'true');
+                player.setAttribute('autoplay', 'true');
+          
+                statusDiv.appendChild(player);
+
+                document.getElementById('uploadForm1').submit(); 
+          
+              });
+            });
           </script>
+
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var fileInput = document.getElementById('file-input2');
+                var label = document.querySelector('label[for="file-input2"]');
+            
+                // Function to update label text
+                function updateLabelText() {
+                    var fileCount = fileInput.files.length;
+                    if (fileCount > 0) {
+                        label.innerHTML = fileCount + ' Files selected'; // Using innerHTML to render HTML properly
+                    } else {
+                        label.innerHTML = 'Chamber 1 Upload'; // Reset to default if no files are selected
+                    }
+                }
+            
+                // Listen for file input changes
+                fileInput.addEventListener('change', updateLabelText);
+            
+                // Update on page load in case the input retains files after refresh (common in some browsers)
+                updateLabelText();
+            });
+            </script>
+          
           <div class="button-refresh">
             <button class="refresh-button" onclick="location.href='/count_new'">
               <i class="fa-solid fa-arrows-rotate"></i>
@@ -100,15 +135,47 @@
           </div>
 
           <div class="buttons">
-            <form action="/upload_2" method="post" enctype="multipart/form-data">
+            <form action="/upload_2" method="post" enctype="multipart/form-data" id="uploadForm2">
                 <input type="file" name="images" id="file-input" multiple style="display: none;">
                 <label for="file-input" class="buttons2 browse-button" tabindex="0">Chamber 2 Upload</label>
-                <button type="submit" class="buttons2 submit-button">Chamber 2 Count</button>
+                <button type="button" id="submitBtn2" class="buttons2 submit-button">Chamber 2 Count</button>       
             </form>
-        </div>
+          </div>
+
+          <script type="module">
+            document.addEventListener('DOMContentLoaded', function() {
+              console.log("DOM fully loaded and parsed");
+          
+              const submitBtn2 = document.getElementById('submitBtn2');
+          
+              submitBtn2.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent form from submitting
+          
+                const statusDiv2 = document.getElementById('chamber2Status');
+          
+                statusDiv2.innerHTML = ''; // Clear any existing content
+          
+                // Create and append the dotLottie player
+                const player2 = document.createElement('dotlottie-player');
+                player2.setAttribute('src', 'https://lottie.host/7710e71a-8ae0-4ac7-9035-dca1806f3160/xFqt1XdNY4.json');
+                player2.setAttribute('background', 'transparent');
+                player2.setAttribute('speed', '1.5');
+                player2.style.width = '100px';
+                player2.style.height = '100px';
+                player2.setAttribute('loop', 'true');
+                player2.setAttribute('autoplay', 'true');
+          
+                statusDiv2.appendChild(player2);
+
+                document.getElementById('uploadForm2').submit(); 
+              });
+            });
+          </script>
+            
+          
         
-        <script>
-          document.addEventListener('DOMContentLoaded', function() {
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
               var fileInput = document.getElementById('file-input');
               var label = document.querySelector('label[for="file-input"]');
           

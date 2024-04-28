@@ -11,7 +11,7 @@ from roboflow import Roboflow
 import supervision as sv
 import cv2
 
-rf = Roboflow(api_key="l50pY8a1y9SHUGlnCUl7")
+rf = Roboflow(api_key="BrXvxwEItFlPuiOuReoU")
 project = rf.workspace().project("ovos-de-parasitas-azoug")
 model = project.version(6).model
 
@@ -19,20 +19,7 @@ model = project.version(6).model
 def predict(file_path):
     result = model.predict(file_path, confidence=40, overlap=30).json()
     detections = sv.Detections.from_inference(result)
-    bounding_box_annotator = sv.BoundingBoxAnnotator()
+    bounding_box_annotator = sv.BoundingBoxAnnotator(thickness=6)
     image = cv2.imread(file_path)
     annotated_image = bounding_box_annotator.annotate(scene=image, detections=detections)
     return detections.class_id.size, annotated_image
-
-# labels = [item["class"] for item in result["predictions"]]
-
-# label_annotator = sv.LabelAnnotator()
-# bounding_box_annotator = sv.BoxAnnotator()
-
-# image = cv2.imread("Enterobius-Vermicularis-151-_jpg.rf.4c92700ee3c56f6c90efe5f27003279a.jpg")
-# # annotated_image = label_annotator.annotate(
-# #     scene=annotated_image, detections=detections, labels=labels)
-
-# print(detections.class_id.size, "parasite eggs detected")
-
-# sv.plot_image(image=annotated_image, size=(16, 16))

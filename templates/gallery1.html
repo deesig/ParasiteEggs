@@ -28,34 +28,17 @@
         <div id="bottom-bar"></div>
       </div>
     </nav>
+    <div class="nav-bottom">
+      <a href="/count">Back</a>
+    </div>
     <section class="hero">
       <div class="hero-container">
         <div class="gallery">
-          <div class="gallery-item">
-            <img
-                src="{{ url_for('static', filename='annotated_images/annotated_image_1.jpg') }}"
-            />
-          </div>
-          <div class="gallery-item">
-            <img
-                src="{{ url_for('static', filename='annotated_images/annotated_image_1.jpg') }}"
-            />
-          </div>
-          <div class="gallery-item">
-            <img
-                src="{{ url_for('static', filename='annotated_images/annotated_image_1.jpg') }}"
-            />
-          </div>
-          <div class="gallery-item">
-            <img
-                src="{{ url_for('static', filename='annotated_images/annotated_image_1.jpg') }}"
-            />
-          </div>
-          <div class="gallery-item">
-            <img
-                src="{{ url_for('static', filename='annotated_images/annotated_image_1.jpg') }}"
-            />
-          </div>
+          <div>
+            {% for image in images %}
+                <img src="{{ image }}" style="width: 200px; height: 200px; margin: 10px;">
+            {% endfor %}
+        </div>
         </div>
       </div>
     </section>
